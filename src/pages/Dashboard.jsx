@@ -31,6 +31,12 @@ export default function Dashboard() {
             <h2 className="text-xl font-bold">₦118,000</h2>
           </CardContent>
         </Card>
+        <Card>
+          <CardContent>
+            <p className="text-gray-500">Provider Balance</p>
+            <h2 className="text-xl font-bold">₦150,000</h2>
+          </CardContent>
+        </Card>
       </div>
 
       <div className="mt-6">

@@ -11,8 +11,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter> {/* ✅ Wrap your whole app */}
       <AppProvider>
-        <div className="flex min-h-screen">
-          <div className=''>
+        <div className="flex h-screen">
+          <div>
             <TheSidebar />
           </div>
           <div className="flex-1 flex flex-col bg-gray-50 overflow-y-auto">
