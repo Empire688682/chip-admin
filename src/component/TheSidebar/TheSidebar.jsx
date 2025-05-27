@@ -1,7 +1,7 @@
 import { Link, useLocation } from "react-router-dom";
 import {
   Home, Users, Settings, Activity, Wallet, CreditCard, Repeat, TrendingUp,
-  Menu, Moon, Sun
+  Menu, LogOut, Moon, Sun
 } from "lucide-react";
 import React ,{ useState } from "react";
 
@@ -45,6 +45,10 @@ export function TheSidebar() {
             </Link>
           );
         })}
+        <p className="flex items-center cursor-pointer px-3 py-5 text-gray-700 hover:bg-gray-100 rounded-md text-sm font-medium transition whitespace-nowrap overflow-hidden">
+          <span className="mr-2"><LogOut size={18} /></span>
+          Logout
+          </p>
       </nav>
     </aside>
   );
