@@ -5,7 +5,7 @@ export function Topbar() {
   const [darkMode, setDarkMode] = useState(false);
 
   return (
-    <header className="w-full bg-white border-b shadow-sm px-6 py-3 flex justify-between items-center">
+    <header className="w-full bg-white border-b border-gray-400 shadow-sm px-6 py-3 flex justify-between items-center">
       <h2 className="text-xl font-semibold text-gray-800">Admin Panel</h2>
       <div className="flex items-center gap-4">
         <button

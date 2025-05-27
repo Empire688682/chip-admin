@@ -22,7 +22,7 @@ export function TheSidebar() {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <aside className={`bg-white border-r h-full p-4 transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
+    <aside className={`bg-white border-r border-gray-400 h-full p-4 transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
       <div className="flex items-center justify-between mb-6">
         <h1 className={`text-2xl font-bold text-indigo-600 transition-opacity ${collapsed ? 'hidden' : 'block'}`}>ChipAdmin</h1>
         <button onClick={() => setCollapsed(!collapsed)} className="p-1 rounded hover:bg-gray-100">

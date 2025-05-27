@@ -5,7 +5,7 @@ import { Card, CardContent } from "../component/ui/card";
 export default function Dashboard() {
   return (
     <>
-      <h1 className="">Dashboard Overview</h1>
+      <h1 className="text-2xl font-semibold mb-4">Dashboard Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent>
