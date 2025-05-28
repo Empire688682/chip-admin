@@ -1,24 +1,40 @@
-import React, { useState } from "react";
-
-// Dummy data generator
-const dummyTransactions = Array.from({ length: 32 }, (_, i) => ({
-  id: `TXN${String(i + 1).padStart(3, "0")}`,
-  user: `User ${i + 1}`,
-  amount: `₦${Math.floor(Math.random() * 5000 + 500)}`,
-  type: ["Airtime", "Data", "Electricity", "Cable"][i % 4],
-  status: ["Success", "Pending", "Failed"][i % 3],
-  date: `2025-05-${String((i % 28) + 1).padStart(2, "0")} 0${i % 10}:00`,
-}));
+import React, { useEffect, useState } from "react";
+import { useGlobalContext } from "../component/Context";
 
 export default function Transactions() {
+  const {apiUrl} = useGlobalContext();
+  const [allTransaction, setAllTransaction] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
 
-  const filtered = dummyTransactions.filter(
+  useEffect(()=>{
+    const fetchAllTransaction = async () =>{
+    try {
+      const response = await fetch(`${apiUrl}/transaction/all-transactions`,
+        {method: "GET",
+          headers:{
+            "Content-Type":"application/json"
+          }
+        }
+      );
+      if(!response.ok){
+        console.log("ERROR:", response)
+      }
+      const data = await response.json();
+      console.log("Data:", data.data);
+      setAllTransaction(data.data);
+    } catch (error) {
+      console.log("ERROR:", error)
+    }
+  }
+  fetchAllTransaction();
+  }, [])
+
+  const filtered = allTransaction.filter(
     (txn) =>
-      txn.id.toLowerCase().includes(search.toLowerCase()) ||
-      txn.user.toLowerCase().includes(search.toLowerCase()) ||
+      txn._id.toLowerCase().includes(search.toLowerCase()) ||
+      txn.userId.toLowerCase().includes(search.toLowerCase()) ||
       txn.type.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -27,11 +43,11 @@ export default function Transactions() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case "Success":
+      case "success":
         return "text-green-600";
-      case "Pending":
+      case "pending":
         return "text-yellow-600";
-      case "Failed":
+      case "failed":
         return "text-red-600";
       default:
         return "text-gray-600";
@@ -59,6 +75,7 @@ export default function Transactions() {
     a.click();
     URL.revokeObjectURL(url);
   };
+  
 
   return (
     <div>
@@ -96,14 +113,14 @@ export default function Transactions() {
             <tbody>
               {paginated.map((txn) => (
                 <tr key={txn.id}>
-                  <td className="p-2 border">{txn.id}</td>
-                  <td className="p-2 border">{txn.user}</td>
+                  <td className="p-2 border">{txn._id}</td>
+                  <td className="p-2 border">{txn.userId}</td>
                   <td className="p-2 border">{txn.amount}</td>
                   <td className="p-2 border">{txn.type}</td>
                   <td className={`p-2 border font-medium ${getStatusColor(txn.status)}`}>
                     {txn.status}
                   </td>
-                  <td className="p-2 border">{txn.date}</td>
+                  <td className="p-2 border">{txn.createdAt}</td>
                 </tr>
               ))}
             </tbody>
