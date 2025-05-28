@@ -1,6 +1,37 @@
 import React from "react";
+import { useGlobalContext } from "../component/Context";
+import { useState } from "react";
+import { useEffect } from "react";
 
 export default function Users() {
+
+  const {apiUrl} = useGlobalContext();
+  const [allUsers, setAllUsers] = useState([]);
+
+  const fetchAllUsers = async () =>{
+    try {
+      const response = await fetch(`${apiUrl}/user/all-users`,
+        {method: "GET",
+          headers: {
+            "Content-Type":"application/json"
+          }
+        }
+      );
+      if(!response.ok){
+        console.log("Error:", response);
+      }
+      const data = await response.json();
+      setAllUsers(data)
+
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  useEffect(()=>{
+    fetchAllUsers();
+  },[])
+
   return (
     <>
       <h1 className="text-2xl font-semibold mb-4">All Users</h1>
@@ -19,12 +50,12 @@ export default function Users() {
           </thead>
           <tbody>
             {
-              Array.from({ length: 20 }).map((_, id) => (
+              allUsers.map((user, id) => (
                 <tr key={id}>
-                  <td className="p-2 border-gray-400 border">John Doe</td>
-                  <td className="p-2 border-gray-400 border">john@example.com</td>
-                  <td className="p-2 border-gray-400 border">09012345678</td>
-                  <td className="p-2 border-gray-400 border">₦12,000</td>
+                  <td className="p-2 border-gray-400 border">{user.name}</td>
+                  <td className="p-2 border-gray-400 border">{user.email}</td>
+                  <td className="p-2 border-gray-400 border">{user.number}</td>
+                  <td className="p-2 border-gray-400 border">{user.walletBalance}</td>
                   <td className="p-2 border-gray-400 border text-green-600">Active</td>
                   <td className="p-2 border-gray-400 border">
                     <button className="text-blue-600 hover:underline">View</button>
