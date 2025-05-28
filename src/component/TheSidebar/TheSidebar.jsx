@@ -6,7 +6,7 @@ import {
 import React ,{ useState } from "react";
 
 const links = [
-  { to: "/", label: "Dashboard", icon: <Home size={18} /> },
+  { to: "/dashboard", label: "Dashboard", icon: <Home size={18} /> },
   { to: "/users", label: "Users", icon: <Users size={18} /> },
   { to: "/transactions", label: "Transactions", icon: <CreditCard size={18} /> },
   { to: "/wallet-logs", label: "Wallet Logs", icon: <Wallet size={18} /> },

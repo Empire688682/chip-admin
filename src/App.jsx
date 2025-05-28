@@ -9,12 +9,14 @@ import Commission from './pages/Commission';
 import Settings from './pages/Settings';
 import Activity from './pages/Activity';
 import Referrals from './pages/Referrals';
+import SignupPage from './pages/SignupPage';
 // Import other pages as needed
 
 const App = () => {
   return (
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<SignupPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/wallet-logs" element={<WalletLogs />} />
