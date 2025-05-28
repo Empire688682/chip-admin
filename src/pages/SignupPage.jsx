@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useGlobalContext } from '../component/Context';
+import {useNavigate} from "react-router-dom"
 
 export default function SignupPage() {
     const [loading, setLoading] = useState(false);
@@ -9,7 +10,8 @@ export default function SignupPage() {
     const [data, setData] = useState({
         email: "",
         password: ""
-    })
+    });
+    const navigate = useNavigate()
 
     const handleOnchange = (e) => {
         const { name, value } = e.target;
@@ -22,22 +24,23 @@ export default function SignupPage() {
             const response = await axios.post(`${apiUrl}/user/login`,
                 data,
                 { withCredentials: true });
-            console.log("Res:", response);
+                
             const { message, user } = response.data;
 
-            if (!response.ok) {
+            if (response.status !== 200 ) {
                 setError(message || "Authentication failed");
                 return;
             }
 
             const now = new Date().getTime();
-            const userDataWithTimestamp = { ...user, timestamp: now };
+            const expiredAt = now + 1000 * 60 * 60 * 24 * 3
+            const userDataWithTimestamp = { ...user, timestamp: expiredAt };
             localStorage.setItem("userData", JSON.stringify(userDataWithTimestamp));
             setData({
                 email: "",
                 password: "",
             });
-            window.location.reload();
+            navigate("/dashboard");
         } catch (error) {
             console.error("Auth Error:", error);
             setError(error?.response?.data?.message);
