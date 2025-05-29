@@ -8,6 +8,8 @@ export default function Users() {
   const { apiUrl } = useGlobalContext();
   const [allUsers, setAllUsers] = useState([]);
 
+  console.log("allUsers:", allUsers)
+
   const fetchAllUsers = async () => {
     try {
       const response = await fetch(`${apiUrl}/all-users`,
@@ -54,7 +56,7 @@ export default function Users() {
           </thead>
           <tbody className="min-h-[70vh]">
             {
-              allUsers.length > 0 ? 
+              allUsers.length > 0 &&
               <>
                   {
                     allUsers.map((user, id) => (
@@ -71,13 +73,15 @@ export default function Users() {
                     ))
                   }
                 </>
-                :
-              <div className="p-3">
-                <p>No Users Found</p>
-              </div>
             }
           </tbody>
         </table>
+        {
+              allUsers.length < 1 && 
+              <aside className="p-3">
+                <span>No Users Found</span>
+              </aside>
+            }
       </div>
     </>
   );
