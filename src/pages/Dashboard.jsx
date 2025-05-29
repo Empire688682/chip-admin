@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import BarChart from "../component/BarChart/BarChart";
+import BarChartWithRange from "../component/BarChart/BarChartWithRange";
 import { Card, CardContent } from "../component/ui/card";
 import { useGlobalContext } from "../component/Context";
-import axios from "axios"
+import axios from "axios";
 
 export default function Dashboard() {
   const { allUsers, apiUrl } = useGlobalContext();
@@ -11,65 +11,56 @@ export default function Dashboard() {
   const [transactions, setTransactions] = useState(0);
   const [providerWallet, setProviderWallet] = useState(0);
 
-  useEffect(()=>{
-    const fetchTotalRevenue = async () =>{
+  useEffect(() => {
+    const fetchTotalRevenue = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/payment/revenue`, {withCredentials: true});
-        if(response.status !== 200){
-          console.log("An error occured");
-          setRevenue(0);
-        }
-        setRevenue(response.data.totalRevenue)
+        const response = await axios.get(`${apiUrl}/payment/revenue`, {
+          withCredentials: true,
+        });
+        setRevenue(response.data.totalRevenue || 0);
       } catch (error) {
-        console.log("Error:", error)
+        console.log("Error fetching revenue:", error);
       }
-    }
+    };
     fetchTotalRevenue();
   }, []);
 
-  useEffect(()=>{
-    const TotalSuccessTransaction = async () =>{
+  useEffect(() => {
+    const TotalSuccessTransaction = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/transaction/success-transactions`, {withCredentials: true});
-        if(response.status !== 200){
-          console.log("An error occured");
-          setTransactions(0);
-        }
-        setTransactions(response.data.totalTransaction)
+        const response = await axios.get(`${apiUrl}/transaction/success-transactions`, {
+          withCredentials: true,
+        });
+        setTransactions(response.data.totalTransaction || 0);
       } catch (error) {
-        console.log("Error:", error)
+        console.log("Error fetching transactions:", error);
       }
-    }
+    };
     TotalSuccessTransaction();
   }, []);
 
-  useEffect(()=>{
-    const getProviderWallet = async () =>{
+  useEffect(() => {
+    const getProviderWallet = async () => {
       try {
-        const response = await axios.get(`${apiUrl}/provider/wallet`, {withCredentials: true});
-        if(response.status !== 200){
-          console.log("An error occured");
-          setProviderWallet(0);
-        }
-        setProviderWallet(response.data.walletBalance)
+        const response = await axios.get(`${apiUrl}/provider/wallet`, {
+          withCredentials: true,
+        });
+        setProviderWallet(response.data.walletBalance || 0);
       } catch (error) {
-        console.log("Error:", error)
+        console.log("Error fetching provider wallet:", error);
       }
-    }
+    };
     getProviderWallet();
   }, []);
 
-
   useEffect(() => {
-    if(!allUsers || allUsers.length < 1){
-      return;
-    }
+    if (!allUsers || allUsers.length < 1) return;
     const calculateUserTotalAmount = () => {
-      const total = allUsers.map(user => 
-        Number(user.walletBalance)|| 0).reduce((sum, bal) =>
-          sum + bal, 0 );
+      const total = allUsers
+        .map((user) => Number(user.walletBalance) || 0)
+        .reduce((sum, bal) => sum + bal, 0);
       setTotalWallet(total);
-    }
+    };
     calculateUserTotalAmount();
   }, [allUsers]);
 
@@ -111,7 +102,7 @@ export default function Dashboard() {
 
       <div className="mt-6">
         <h2 className="text-lg font-semibold mb-2">Transaction Volume</h2>
-        <BarChart />
+        <BarChartWithRange />
       </div>
     </div>
   );
