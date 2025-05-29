@@ -4,6 +4,8 @@ import {
   Menu, LogOut, Moon, Sun
 } from "lucide-react";
 import React ,{ useState } from "react";
+import axios from "axios";
+import { useGlobalContext } from "../Context";
 
 const links = [
   { to: "/dashboard", label: "Dashboard", icon: <Home size={18} /> },
@@ -20,6 +22,23 @@ const links = [
 export function TheSidebar() {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const {apiUrl} = useGlobalContext();
+
+  const logoutAdmin = async () =>{
+    try {
+      const res = await axios.post(`${apiUrl}/logout`, null,
+        {withCredentials:true}
+      );
+      console.log("res:", res);
+      if(res.status !== 200){
+        console.log("Error:", res);
+      };
+      localStorage.removeItem("userData");
+      window.location.reload()
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  }
 
   return (
     <aside className={`bg-white border-r border-gray-400 h-screen overflow-scroll p-4 transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
@@ -45,7 +64,7 @@ export function TheSidebar() {
             </Link>
           );
         })}
-        <p className="flex items-center cursor-pointer px-3 py-5 text-gray-700 hover:bg-gray-100 rounded-md text-sm font-medium transition whitespace-nowrap overflow-hidden">
+        <p className="flex items-center cursor-pointer px-3 py-5 text-gray-700 hover:bg-gray-100 rounded-md text-sm font-medium transition whitespace-nowrap overflow-hidden" onClick={logoutAdmin}>
           <span className="mr-2"><LogOut size={18} /></span>
           Logout
           </p>

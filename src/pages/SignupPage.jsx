@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useGlobalContext } from '../component/Context';
-import {useNavigate} from "react-router-dom"
 
 export default function SignupPage() {
     const [loading, setLoading] = useState(false);
@@ -11,7 +10,6 @@ export default function SignupPage() {
         email: "",
         password: ""
     });
-    const navigate = useNavigate()
 
     const handleOnchange = (e) => {
         const { name, value } = e.target;
@@ -21,7 +19,7 @@ export default function SignupPage() {
     const loginUser = async () => {
         setLoading(true);
         try {
-            const response = await axios.post(`${apiUrl}/user/login`,
+            const response = await axios.post(`${apiUrl}/login`,
                 data,
                 { withCredentials: true });
                 
@@ -40,7 +38,7 @@ export default function SignupPage() {
                 email: "",
                 password: "",
             });
-            navigate("/dashboard");
+            window.location.reload();
         } catch (error) {
             console.error("Auth Error:", error);
             setError(error?.response?.data?.message);
@@ -63,11 +61,11 @@ export default function SignupPage() {
 
     return (
         <div className="min-h-screen absolute w-full flex items-center justify-center text-black px-4">
-            <div className="fixed inset-0 bg-black/60 flex items-center justify-center px-6 z-70">
+            <div className="fixed inset-0 bg-black/90 flex items-center justify-center px-6 z-70">
                 <div className="bg-white rounded-xl shadow-lg w-full md:max-w-md max-w:[300px] p-8 relative">
 
-                    <h2 className="text-2xl font-bold mb-4 text-blue-600">
-                        Login
+                    <h2 className="text-2xl font-bold mb-4 text-blue-600 text-center">
+                        Chipsub Admin Signin 
                     </h2>
 
                     <form onSubmit={handleFormSubmission} className="space-y-4">

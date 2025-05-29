@@ -1,12 +1,40 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 
 const AppContext = React.createContext();
 
 export const AppProvider = ({children}) => {
-  const apiUrl = "http://localhost:1999/api"
+
+  const apiUrl = "http://localhost:1999/api";
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState({});
+
+  
+  useEffect(() => {
+  const storedUser = JSON.parse(localStorage.getItem("userData"));
+  const now = new Date().getTime();
+
+  if (!storedUser) {
+    navigate("/signup");
+    return;
+  }
+
+  // If expired, clear it and redirect
+  if (storedUser.timestamp < now) {
+    localStorage.removeItem("userData");
+    navigate("/signup");
+    return;
+  }
+  setUserData(storedUser);
+  // Valid user
+  navigate("/dashboard");
+}, []);
+
+
   return <AppContext.Provider value={{
-    apiUrl
+    apiUrl,
+    userData
   }}>
     {children}
   </AppContext.Provider>
