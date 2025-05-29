@@ -55,7 +55,7 @@ export default function Users() {
           <tbody className="min-h-[70vh]">
             {
               allUsers.length > 0 ? 
-              <div>
+              <>
                   {
                     allUsers.map((user, id) => (
                       <tr key={id}>
@@ -70,7 +70,7 @@ export default function Users() {
                       </tr>
                     ))
                   }
-                </div>
+                </>
                 :
               <div className="p-3">
                 <p>No Users Found</p>
