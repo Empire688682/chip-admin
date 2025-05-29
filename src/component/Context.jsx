@@ -8,7 +8,6 @@ export const AppProvider = ({children}) => {
 
   
   const apiUrl = import.meta.env.VITE_API_URL;
-  console.log("apiUrl:", apiUrl);
 
   const navigate = useNavigate();
 
