@@ -8,6 +8,8 @@ export default function Dashboard() {
   const { allUsers, apiUrl } = useGlobalContext();
   const [totalWallet, setTotalWallet] = useState(0);
   const [revenue, setRevenue] = useState(0);
+  const [transactions, setTransactions] = useState(0);
+  const [providerWallet, setProviderWallet] = useState(0);
 
   useEffect(()=>{
     const fetchTotalRevenue = async () =>{
@@ -23,7 +25,39 @@ export default function Dashboard() {
       }
     }
     fetchTotalRevenue();
-  }, [])
+  }, []);
+
+  useEffect(()=>{
+    const TotalSuccessTransaction = async () =>{
+      try {
+        const response = await axios.get(`${apiUrl}/transaction/success-transactions`, {withCredentials: true});
+        if(response.status !== 200){
+          console.log("An error occured");
+          setTransactions(0);
+        }
+        setTransactions(response.data.totalTransaction)
+      } catch (error) {
+        console.log("Error:", error)
+      }
+    }
+    TotalSuccessTransaction();
+  }, []);
+
+  useEffect(()=>{
+    const getProviderWallet = async () =>{
+      try {
+        const response = await axios.get(`${apiUrl}/provider/wallet`, {withCredentials: true});
+        if(response.status !== 200){
+          console.log("An error occured");
+          setProviderWallet(0);
+        }
+        setProviderWallet(response.data.walletBalance)
+      } catch (error) {
+        console.log("Error:", error)
+      }
+    }
+    getProviderWallet();
+  }, []);
 
 
   useEffect(() => {
@@ -58,7 +92,7 @@ export default function Dashboard() {
         <Card>
           <CardContent>
             <p className="text-gray-500">Total Transactions</p>
-            <h2 className="text-xl font-bold">3,209</h2>
+            <h2 className="text-xl font-bold">₦{transactions.toLocaleString()}</h2>
           </CardContent>
         </Card>
         <Card>
@@ -70,7 +104,7 @@ export default function Dashboard() {
         <Card>
           <CardContent>
             <p className="text-gray-500">Provider Balance</p>
-            <h2 className="text-xl font-bold">₦150,000</h2>
+            <h2 className="text-xl font-bold">₦{providerWallet.toLocaleString()}</h2>
           </CardContent>
         </Card>
       </div>
