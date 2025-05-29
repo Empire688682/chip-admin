@@ -6,7 +6,7 @@ const AppContext = React.createContext();
 
 export const AppProvider = ({children}) => {
 
-  const apiUrl = "http://localhost:1999/api";
+  const apiUrl = "https://chipsub-admin-backend.onrender.com/api";
   const navigate = useNavigate();
   const [userData, setUserData] = useState({});
 
