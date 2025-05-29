@@ -10,7 +10,7 @@ export default function Users() {
 
   const fetchAllUsers = async () => {
     try {
-      const response = await fetch(`${apiUrl}/user/all-users`,
+      const response = await fetch(`${apiUrl}/all-users`,
         {
           method: "GET",
           credentials: "include",

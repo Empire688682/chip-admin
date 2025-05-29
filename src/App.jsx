@@ -9,13 +9,13 @@ import Commission from './pages/Commission';
 import Settings from './pages/Settings';
 import Activity from './pages/Activity';
 import Referrals from './pages/Referrals';
-import SignupPage from './pages/SignupPage';
+import SignupProtector from './pages/SignupProtector';
 // Import other pages as needed
 
 const App = () => {
   return (
       <Routes>
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/signup" element={<SignupProtector />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/users" element={<Users />} />
         <Route path="/transactions" element={<Transactions />} />

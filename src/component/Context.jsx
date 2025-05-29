@@ -6,8 +6,11 @@ const AppContext = React.createContext();
 
 export const AppProvider = ({children}) => {
 
-  const apiUrl = "https://chipsub-admin-backend.onrender.com/api";
+  
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const navigate = useNavigate();
+
   const [userData, setUserData] = useState({});
 
   
@@ -27,8 +30,6 @@ export const AppProvider = ({children}) => {
     return;
   }
   setUserData(storedUser);
-  // Valid user
-  navigate("/dashboard");
 }, []);
 
 
