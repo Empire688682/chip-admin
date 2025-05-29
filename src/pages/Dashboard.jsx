@@ -1,22 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BarChart from "../component/BarChart/BarChart";
 import { Card, CardContent } from "../component/ui/card";
+import { useGlobalContext } from "../component/Context";
+import axios from "axios"
 
 export default function Dashboard() {
+  const { allUsers, apiUrl } = useGlobalContext();
+  const [totalWallet, setTotalWallet] = useState(0);
+  const [revenue, setRevenue] = useState(0);
+
+  useEffect(()=>{
+    const fetchTotalRevenue = async () =>{
+      try {
+        const response = await axios.get(`${apiUrl}/payment/revenue`, {withCredentials: true});
+        if(response.status !== 200){
+          console.log("An error occured");
+          setRevenue(0);
+        }
+        setRevenue(response.data.totalRevenue)
+      } catch (error) {
+        console.log("Error:", error)
+      }
+    }
+    fetchTotalRevenue();
+  }, [])
+
+
+  useEffect(() => {
+    if(!allUsers || allUsers.length < 1){
+      return;
+    }
+    const calculateUserTotalAmount = () => {
+      const total = allUsers.map(user => 
+        Number(user.walletBalance)|| 0).reduce((sum, bal) =>
+          sum + bal, 0 );
+      setTotalWallet(total);
+    }
+    calculateUserTotalAmount();
+  }, [allUsers]);
+
   return (
-    <>
+    <div>
       <h1 className="text-2xl font-semibold mb-4">Dashboard Overview</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <Card>
           <CardContent>
             <p className="text-gray-500">Total Users</p>
-            <h2 className="text-xl font-bold">1,245</h2>
+            <h2 className="text-xl font-bold">{allUsers.length}</h2>
           </CardContent>
         </Card>
         <Card>
           <CardContent>
             <p className="text-gray-500">Total Revenue</p>
-            <h2 className="text-xl font-bold">₦452,000</h2>
+            <h2 className="text-xl font-bold">₦{revenue.toLocaleString()}</h2>
           </CardContent>
         </Card>
         <Card>
@@ -28,7 +64,7 @@ export default function Dashboard() {
         <Card>
           <CardContent>
             <p className="text-gray-500">Wallet Balance</p>
-            <h2 className="text-xl font-bold">₦118,000</h2>
+            <h2 className="text-xl font-bold">₦{totalWallet.toLocaleString()}</h2>
           </CardContent>
         </Card>
         <Card>
@@ -43,6 +79,6 @@ export default function Dashboard() {
         <h2 className="text-lg font-semibold mb-2">Transaction Volume</h2>
         <BarChart />
       </div>
-    </>
+    </div>
   );
 }

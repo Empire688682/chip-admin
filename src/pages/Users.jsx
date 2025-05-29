@@ -1,42 +1,9 @@
 import React from "react";
 import { useGlobalContext } from "../component/Context";
-import { useState } from "react";
-import { useEffect } from "react";
 
 export default function Users() {
 
-  const { apiUrl } = useGlobalContext();
-  const [allUsers, setAllUsers] = useState([]);
-
-  console.log("allUsers:", allUsers)
-
-  const fetchAllUsers = async () => {
-    try {
-      const response = await fetch(`${apiUrl}/all-users`,
-        {
-          method: "GET",
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json"
-          },
-
-        },
-      );
-      if (!response.ok) {
-        console.log("Error:", response);
-        return
-      }
-      const data = await response.json();
-      setAllUsers(data)
-
-    } catch (error) {
-      console.log("Error:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchAllUsers();
-  }, [])
+  const {allUsers} = useGlobalContext();
 
   return (
     <>
@@ -59,7 +26,7 @@ export default function Users() {
               allUsers.length > 0 &&
               <>
                   {
-                    allUsers.map((user, id) => (
+                    [...allUsers].reverse().map((user, id) => (
                       <tr key={id}>
                         <td className="p-2 border-gray-400 border">{user.name}</td>
                         <td className="p-2 border-gray-400 border">{user.email}</td>

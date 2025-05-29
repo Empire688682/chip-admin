@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useGlobalContext } from "../component/Context";
 
 export default function Transactions() {
-  const {apiUrl} = useGlobalContext();
+  const {apiUrl, allUsers} = useGlobalContext();
   const [allTransaction, setAllTransaction] = useState([]);
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 10;
+
+  console.log("allUsers:", allUsers);
 
   useEffect(()=>{
     const fetchAllTransaction = async () =>{
     try {
       const response = await fetch(`${apiUrl}/transaction/all-transactions`,
         {method: "GET",
+          credentials: "include",
           headers:{
             "Content-Type":"application/json"
           }
@@ -22,7 +25,6 @@ export default function Transactions() {
         console.log("ERROR:", response)
       }
       const data = await response.json();
-      console.log("Data:", data.data);
       setAllTransaction(data.data);
     } catch (error) {
       console.log("ERROR:", error)
@@ -38,8 +40,18 @@ export default function Transactions() {
       txn.type.toLowerCase().includes(search.toLowerCase())
   );
 
-  const paginated = filtered.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+  const paginated = filtered.reverse().slice((page - 1) * itemsPerPage, page * itemsPerPage);
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
+
+  const getUserById = (id) =>{
+    if(allUsers && allTransaction && allTransaction.length > 0){
+      const user = allUsers.find((user) => id === user._id);
+    console.log("user:", user);
+    return user? user.name : "unknow user";
+    }
+    
+  }
+  
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -112,9 +124,9 @@ export default function Transactions() {
             </thead>
             <tbody>
               {paginated.map((txn) => (
-                <tr key={txn.id}>
+                <tr key={txn._id}>
                   <td className="p-2 border">{txn._id}</td>
-                  <td className="p-2 border">{txn.userId}</td>
+                  <td className="p-2 border">{getUserById(txn.userId)}</td>
                   <td className="p-2 border">{txn.amount}</td>
                   <td className="p-2 border">{txn.type}</td>
                   <td className={`p-2 border font-medium ${getStatusColor(txn.status)}`}>

@@ -32,10 +32,41 @@ export const AppProvider = ({children}) => {
   setUserData(storedUser);
 }, []);
 
+const [allUsers, setAllUsers] = useState([]);
+
+  const fetchAllUsers = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/all-users`,
+        {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+        },
+      );
+      if (!response.ok) {
+        console.log("Error:", response);
+        return
+      }
+      const data = await response.json();
+      setAllUsers(data)
+
+    } catch (error) {
+      console.log("Error:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllUsers();
+  }, []);
+
 
   return <AppContext.Provider value={{
     apiUrl,
-    userData
+    userData,
+    allUsers
   }}>
     {children}
   </AppContext.Provider>
