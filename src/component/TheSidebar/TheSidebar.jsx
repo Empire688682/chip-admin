@@ -41,7 +41,7 @@ export function TheSidebar() {
   }
 
   return (
-    <aside className={`bg-white border-r border-gray-400 h-screen overflow-scroll p-4 transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}>
+    <aside className={`bg-white border-r border-gray-400 h-screen overflow-scroll p-4 transition-all duration-300 ${collapsed ? 'w-18' : 'w-64'}`}>
       <div className="flex items-center justify-between mb-6">
         <h1 className={`text-2xl font-bold text-indigo-600 transition-opacity ${collapsed ? 'hidden' : 'block'}`}>ChipAdmin</h1>
         <button onClick={() => setCollapsed(!collapsed)} className="p-1 rounded hover:bg-gray-100">
@@ -64,7 +64,7 @@ export function TheSidebar() {
             </Link>
           );
         })}
-        <p className="flex items-center cursor-pointer px-3 py-5 text-gray-700 hover:bg-gray-100 rounded-md text-sm font-medium transition whitespace-nowrap overflow-hidden" onClick={logoutAdmin}>
+        <p className={`flex items-center cursor-pointer px-3 py-5 text-gray-700 hover:bg-gray-100 rounded-md text-sm font-medium transition whitespace-nowrap overflow-hidden`} onClick={logoutAdmin}>
           <span className="mr-2"><LogOut size={18} /></span>
           Logout
           </p>
