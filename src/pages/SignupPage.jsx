@@ -93,8 +93,6 @@ export default function SignupPage() {
                             </p>
                         }
 
-                        <p className='cursor-pointer underline text-center'>Forgot Password</p>
-
                         <button
                             disabled={loading}
                             type="submit"
